@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Steam Scraping</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="{{ url_for('static',filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="{{ url_for('static',filename='css/shop-homepage.css') }}" rel="stylesheet">
+  <style>
+    img{
+      width:-webkit-fill-available;
+      width:-moz-available;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Steam Scraping</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container">
+
+    <div class="row">
+
+      <div class="col-lg-3">
+
+        <h1 class="my-4">Scrap Top Seller Games</h1>
+
+      </div>
+      <!-- /.col-lg-3 -->
+
+      <div class="col-lg-9">
+
+        <div class="row my-4">
+          {% for top_seller in top_sellers %}
+            <div class="col-lg-4 col-md-6 mb-4">
+              <div class="card h-100">
+                <a href="{{ top_seller['href']|safe }}">
+                  {{top_seller.find('div',attrs={'class':'tab_item_cap'}).find('img') |safe}}</a>
+                <div class="card-body">
+                  <h4 class="card-title">
+                    <a href="{{ top_seller['href']|safe }}">
+                      {{top_seller.find('div',attrs={'class':'tab_item_name'}).text|safe}}</a>
+                  </h4>
+                  <p class="card-text">{{top_seller.find('div',attrs={'class':'tab_item_top_tags'}).text|safe}}</p>
+                </div>
+                <div class="card-footer">
+                  <medium class="text-muted">{{top_seller.find('div',attrs={'class':'discount_original_price'}).text|safe}}</medium>
+                  <medium class="text-muted">{{top_seller.find('div',attrs={'class':'discount_pct'}).text|safe}}</medium><br/>
+                  <medium class="text-muted">{{top_seller.find('div',attrs={'class':'discount_final_price'}).text|safe}}</medium>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+
+        </div>
+        <!-- /.row -->
+
+      </div>
+      <!-- /.col-lg-9 -->
+
+    </div>
+    <!-- /.row -->
+
+  </div>
+  <!-- /.container -->
+
+  <!-- Footer -->
+  <footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; Steam Scraping 2020</p>
+    </div>
+    <!-- /.container -->
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="{{ url_for('static',filename='vendor/jquery/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static',filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+</body>
+
+</html>
